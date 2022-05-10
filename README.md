@@ -1,7 +1,7 @@
-#PKNU-Live Coaching Backend
+# PKNU-Live Coaching Backend
 backend with pure node.js and websocket module
 
-##todo list:
+## todo list:
 
 Server side
 1. Async child process for compiling
