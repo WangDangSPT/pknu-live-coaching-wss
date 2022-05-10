@@ -1,7 +1,10 @@
 const {spawn} = require('child_process')
 const {writeFile} = require('fs');
+
+//need to wrap this in a promise
 let compile = (sourceCode)=>{
     //convert string to .c file
+    let output = ''
     writeFile('source.c',sourceCode,err =>{
         if(err){
             console.log(`error: ${err}`);
@@ -12,5 +15,9 @@ let compile = (sourceCode)=>{
         stdio: 'inherit',
         shell: true
     })
+    child.stdout.on('data', (data) =>{
+        return output+=data;
+    })
+    
 }
 module.exports.compile
