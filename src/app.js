@@ -1,39 +1,43 @@
 const {createServer} = require('http')
 const Websocket = require('ws')
 const compile = require('./helpers/c/exec')
+const createUserDir = require('./config/createUserDir')
+const appendCode = require('./helpers/c/appendC')
+const express = require('express')
+const { builtinModules } = require('module')
 
-const server = createServer()
+const app = express()
+const server = createServer(app)
 const wss = new Websocket.Server({server})
+const port = 8001
+
+wss.getID = ()=>{
+    function generator(){
+        return Math.floor((Math.random()+1)*0x10000).toString(16)
+    }
+    return generator()+generator()
+}
 
 wss.on('connection', socket =>{
     console.log('new client connected');
-    socket.on('message', message=>{
-        const data = JSON.parse(message)
-        //events 
-        if(data.event === 'user-code'){
-            console.log(data.payload);
-            wss.clients.forEach(client =>{
-                if (client !== socket && client.readyState === Websocket.OPEN) {
-                client.send(message)
-                }
-            })
-        }
-        if(data.event === 'compile'){
-            // add async function that calls compile method when sent here
-            let output = JSON.stringify({ event: 'compile', payload: compile(data.payload) })
-            
-            //send output to all clients
-            wss.clients.forEach(client =>{
-                if(client.readyState === Websocket.OPEN){client.send(output)}
-            })
-        }
+    //create new userID and create Directory for use
+    socket.id = wss.getID()
+    createUserDir.createDir(socket.id)
+
+    socket.on('message', code=>{
+        //message will be string, no need to parse JSON
+        appendCode.appendCode(code,socket.id);
+        console.log(`appended code : ${code}`);
     })
+
+
     socket.on('close', ()=>{
         console.log('user disconnected');
     })
 })
 
-server.listen(8001, ()=> {
-    console.log('listening on port: 8001');
+server.listen(port, ()=> {
+    console.log(`listening on port: ${port}`);
 })
 
+module.exports = {app}
