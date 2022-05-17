@@ -14,8 +14,7 @@ websocket.addEventListener('message', event=>{
 })
 formSubmit.addEventListener('submit', e =>{
     e.preventDefault();
-    let code = messageInput.value
-    let message = JSON.stringify({ event: 'user-code', payload: code })
+    let message = messageInput.value
     websocket.send(message)
     messageInput.value = ''
 })

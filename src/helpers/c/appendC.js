@@ -1,8 +1,8 @@
-const {existsSync,writeFileSync} = require('fs')
-//a file handler is assigned for each client, so we use
-// writeStream instead of appendFile
+const {writeFileSync} = require('fs')
+
 function appendCode(code,userid){
-    writeFileSync(`/var/lib/capstonedata/${userid}/source.c`,code,{flag: 'a+'},err=>{
+    const path = `/var/lib/capstonedata/${userid}/source.c`
+    writeFileSync(`test/source2.c`,code,err=>{
         if(err){
             console.error(err);
         }
