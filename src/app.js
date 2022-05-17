@@ -14,12 +14,12 @@ wss.on('connection', socket =>{
             console.log(data.payload);
             wss.clients.forEach(client =>{
                 if (client !== socket && client.readyState === Websocket.OPEN) {
-                client.send(data.payload)
+                client.send(message)
                 }
             })
         }
         if(data.event === 'compile'){
-            // async function that calls compile method
+            // add async function that calls compile method when sent here
             let output = JSON.stringify({ event: 'compile', payload: compile(data.payload) })
             
             //send output to all clients
@@ -27,6 +27,9 @@ wss.on('connection', socket =>{
                 if(client.readyState === Websocket.OPEN){client.send(output)}
             })
         }
+    })
+    socket.on('close', ()=>{
+        console.log('user disconnected');
     })
 })
 

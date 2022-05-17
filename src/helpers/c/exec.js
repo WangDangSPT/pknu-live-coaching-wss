@@ -1,7 +1,8 @@
+const { rejects } = require('assert');
 const {spawn} = require('child_process')
 const {writeFileSync} = require('fs');
 
-//need to wrap this in a promise
+//in case if user input is a string
 let compileString = (sourceCode)=>{
     //convert string to .c file
     let output = ''
@@ -11,7 +12,6 @@ let compileString = (sourceCode)=>{
         }
     })
     return compileFile()
-    
 }
 
 let compileFile = () =>{
@@ -36,11 +36,16 @@ let compileFile = () =>{
                 })
                 child2.stderr.on('data', (data=>{
                     console.error(`stderr : ${data}`)
-                    // return output = `error while executing source file, stderr : ${data}`
+                    return data;
                 }))
         }
     })
-
-    
+}
+//returns a JSON object
+const compileSend = ()=>{
+    return new promises((resolve,reject)=>{
+        // child || child2 stderr -. reject
+        // else resolve
+    })
 }
 module.exports.compileFile = compileFile
