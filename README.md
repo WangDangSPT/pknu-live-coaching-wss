@@ -1,5 +1,5 @@
 # PKNU-Live Coaching Backend
-backend with pure node.js and websocket module
+backend with node.js and express and websocket module
 
 ## todo list:
 
@@ -7,10 +7,10 @@ Server side
 1. Async child process for compiling
 2. Websocket rooms
 3. disconnect handler
-3. implement DB
-4. user login and signup handlers
-5. file concurency implementation
+4. implement DB
+5. user login and signup handlers
+6. file concurency implementation
+7. routing for API
+8. cleant the code
  
-Client Side
-1. Eventlister for compiling
 
