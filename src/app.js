@@ -4,8 +4,8 @@ const {exec} = require('child_process')
 const express = require('express')
 
 const compile = require('./helpers/c/exec')
-const createUserDir = require('./helpers/createUserDir')
 const appendCode = require('./helpers/appendCode')
+const checkDir = require('./helpers/directory')
 
 const app = express()
 const server = createServer(app)
@@ -13,25 +13,14 @@ const wss = new Websocket.Server({server})
 const port = 8001
 
 // client id generator
-wss.getID = ()=>{
-    function generator(){
-        return Math.floor((Math.random()+1)*0x10000).toString(16)
-    }
-    return generator()+generator()
-}
 
-wss.on('connection', socket =>{
-    console.log('new client connected')
-    //create new userID and create Directory for use
-    socket.id = wss.getID()
-    //send generated userID to user
-    socket.send(socket.id);
-    // create userDir
-    createUserDir.createDirSync(socket.id)
 
+wss.on('connection', (socket,req) =>{
     socket.on('message', data=>{
-        //message will be string, no need to parse JSON
-        appendCode.appendCode(data,socket.id)
+        const userdata = JSON.parse(data);
+        // check if user dir exists, if not make dir
+        checkDir(userdata.id)
+        appendCode.appendCode(data,userdata.id)
         console.log(`appended code : ${data}`)
     })
     socket.on('close',code=>{
@@ -77,6 +66,9 @@ app.get('/compile/:id',async (req,res)=>{
 
     }
 
+})
+app.get('/testapi',(req,res)=>{
+    res.status(200).send('testing endpoint')
 })
 
 server.listen(port, ()=> {

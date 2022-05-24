@@ -1,10 +1,10 @@
 const {writeFileSync} = require('fs')
 
 function appendCode(code,userid){
-    const path = `/var/lib/capstonedata/${userid}/source.c`
+    const path = `../userdata/${userid}/source.c`
     //Widows test path
-    //const pathWin = `./test/source2.c`
-    writeFileSync(path,code,err=>{
+    const pathWin = `./test/${userid}/source.c`
+    writeFileSync(pathWin,code,err=>{
         if(err){
             console.error(err);
         }

@@ -37,7 +37,9 @@ const lsDir = ()=>{
         })
     })
 }
-
+app.get('/testapi',(req,res)=>{
+    res.status(200).send('testing endpoint')
+})
 
 
 
