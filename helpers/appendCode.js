@@ -11,4 +11,4 @@ function appendCode(code,userid){
     })
 }
 
-module.exports.appendCode = appendCode
+module.exports = appendCode
