@@ -1,6 +1,6 @@
 const {createServer} = require('http')
-const { send } = require('process')
 const {WebSocketServer} = require('ws')
+require('dotenv').config()
 
 const appendCode = require('./helpers/appendCode')
 const checkDir = require('./helpers/directory')
@@ -10,12 +10,11 @@ const server = createServer()
 const wss = new WebSocketServer({server})
 const port = process.env.PORT
 
-
 wss.on('connection', (socket,req) =>{
     socket.on('message', messsage=>{
         const {id,data} = JSON.parse(message);
         // check if user dir exists, if not make dir
-        checkDir(userdata.id)
+        checkDir(id)
         // append code
         appendCode(data,Number(id))
         socket.send(JSON.stringify({id: id, data: `appended code : ${data}`}))
