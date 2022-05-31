@@ -10,14 +10,14 @@ const server = createServer()
 const wss = new WebSocketServer({server})
 const port = process.env.PORT
 
-wss.on('connection', (socket,req) =>{
-    socket.on('message', messsage=>{
-        const {id,data} = JSON.parse(message);
+wss.on('connection', (socket) =>{
+    socket.on('message', data=>{
+        const {id,message} = JSON.parse(data);
         // check if user dir exists, if not make dir
         checkDir(id)
         // append code
-        appendCode(data,Number(id))
-        socket.send(JSON.stringify({id: id, data: `appended code : ${data}`}))
+        appendCode(message,id)
+        socket.send(JSON.stringify({id: id, data: `appended code : ${message}`}))
     })
     socket.on('close',code=>{
         console.log(`user disconnected with code : ${code}`)
