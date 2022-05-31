@@ -4,9 +4,9 @@ const {mkdirSync} = require('fs')
 
 
 function checkDir(userID){
-    const pathWin = `./test/${userID}`
+    //const pathWin = `./test/${userID}`
     const path = `../userdata/${userID}`
-    if(!existsSync(pathWin)){
+    if(!existsSync(path)){
         mkdirSync(path,{recursive: true})
     }
     return
